@@ -1,0 +1,37 @@
+---
+title: "Lab 1 - Nossa Pergunta"
+author: "Pedro Lira"
+output: html_document
+---
+
+```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(here)
+theme_set(theme_bw())
+```
+
+Analisaremos os episódios das "séries" xxxx
+
+```{r warning=FALSE}
+dados = read_csv(here("data/series_from_imdb.csv"), 
+                    progress = FALSE,
+                    col_types = cols(.default = col_double(), 
+                                     series_name = col_character(), 
+                                     episode = col_character(), 
+                                     url = col_character(),
+                                     season = col_character())) %>% filter(series_name %in% c("Yu Yu Hakusho", "Falling Skies"))
+
+series <- dados %>% group_by(series_name) %>%
+  summarise(n = n()) 
+```
+
+2) a. Qual das séries que você escolheu é mais bem avaliada no IMDB? A diferença é grande? Pequena? Muda de acordo com as temporadas da série? 
+
+```{r}
+dados %>% 
+ggplot(aes(x = series_name, y = user_rating)) + 
+    geom_jitter(width = .05) +
+    ylim(5, 10) + 
+    labs(x = "Série", y = "Avaliação no IMDB")
+```
+
