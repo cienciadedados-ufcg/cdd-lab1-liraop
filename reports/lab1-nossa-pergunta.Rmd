@@ -15,8 +15,8 @@ Analizando as séries *Dexter* e *How I Met Your Mother*, que são bastante dife
 
 #Os dados
 
-Obtidos diretamente do IMDB, a tabela de dados obtidas possui, dentre outros dados, o nome da série, temporada, episódios das temporadas, nota de avaliações e quantidade de avaliações. Estes dados são importados no código abaixo.
-Fazendo uma tabela com alguns dados mais concisos e importantes para nossa análise, foi criada uma tabela *series* que contém informações reelevantes sobre as séries escolhidas.
+Obtidos diretamente do IMDB, a tabela de dados obtidas possui, dentre outros dados, o nome da série, temporada, episódios das temporadas, nota de avaliações e quantidade de avaliações. Estes dados são importados no código abaixo. Estes se encontram em `dados`. 
+Para facilitar a manipulação, separamos os dados referentes as séries que foram escolhidas para análise em suas respectivas variáveis `dexter` e `himym`.
 
 ```{r warning=FALSE}
 dados = read_csv(here("data/series_from_imdb.csv"), 
@@ -25,11 +25,39 @@ dados = read_csv(here("data/series_from_imdb.csv"),
                                      series_name = col_character(), 
                                      episode = col_character(), 
                                      url = col_character(),
-                                     season = col_character())) %>% filter(series_name %in% c("Dexter", "How I Met Your Mother"))
+                                     season = col_character()))
 
-series <- dados %>% group_by(series_name) %>% 
-  summarise(episodes = n(), rating_avg = mean(user_rating), total_ratings = sum(user_votes), rpe = total_ratings/episodes)
+dexter <- dados %>% group_by(series_name) %>% filter(series_name == "Dexter")
+himym <- dados %>% group_by(series_name) %>% filter(series_name == "How I Met Your Mother")
 ```
+
+##Visualizando os dados
+
+### Dexter
+
+Segundo a Wikipedia:
+
+>Dexter is an American television crime drama mystery series that aired on Showtime from October 1, 2006, to September 22, 2013. (...) Season four aired its season finale on December 13, 2009, to a record-breaking audience of 2.6 million viewers, making it the most-watched original series episode ever on Showtime at that time.
+
+Contudo...
+
+> Season eight has 60% positive reviews, a score of 6.5 out of 10, and the final consensus: "In its final season, Dexter holds on to much of season seven's momentum and finishes on a strong note, even if the inevitable conclusion feels somewhat anticlimactic.""
+
+```{r warning=FALSE}
+boxplot(dexter$user_votes ~ dexter$season, col=topo.colors(8))
+```
+
+
+### How I Met Your Mother
+
+Segundo a Wikipedia:
+
+>How I Met Your Mother (often abbreviated to HIMYM) is an American sitcom that originally aired on CBS from September 19, 2005, to March 31, 2014. (...) The ninth and final season began airing on September 23, 2013, and concluded on March 31, 2014, with a double-length finale episode, which received polarized reviews from critics and fans alike for its controversial twist ending, as many critics and fans believed it contradicted many of the previous episodes.
+
+```{r warning=FALSE}
+boxplot(himym$user_votes ~ himym$season, col=topo.colors(9))
+```
+
 
 #As Perguntas
 
