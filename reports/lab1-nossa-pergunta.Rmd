@@ -16,7 +16,6 @@ Analizando as séries *Dexter* e *How I Met Your Mother*, que são bastante dife
 #Os dados
 
 Obtidos diretamente do IMDB, a tabela de dados obtidas possui, dentre outros dados, o nome da série, temporada, episódios das temporadas, nota de avaliações e quantidade de avaliações. Estes dados são importados no código abaixo. Estes se encontram em `dados`. 
-Para facilitar a manipulação, separamos os dados referentes as séries que foram escolhidas para análise em suas respectivas variáveis `dexter` e `himym`.
 
 ```{r warning=FALSE}
 dados = read_csv(here("data/series_from_imdb.csv"), 
@@ -25,15 +24,44 @@ dados = read_csv(here("data/series_from_imdb.csv"),
                                      series_name = col_character(), 
                                      episode = col_character(), 
                                      url = col_character(),
-                                     season = col_character()))
+                                     season = col_character())) %>% 
+                                    filter(series_name %in% c("Dexter", "How I Met Your Mother")) 
 
-dexter <- dados %>% group_by(series_name) %>% filter(series_name == "Dexter")
-himym <- dados %>% group_by(series_name) %>% filter(series_name == "How I Met Your Mother")
 ```
 
 ##Visualizando os dados
 
-### Dexter
+```{r warning=FALSE}
+d2 <- dados %>% group_by(series_name, season) %>% 
+        summarize(season_rating = mean(user_rating),
+            rating_dp = sd(user_rating),
+            rating_var = var(user_rating),
+            total_votes = sum(user_votes),
+            voting_mean = mean(user_votes),
+            voting_sd = sd(user_votes)
+        )
+d2
+```
+
+Aqui temos os dados necessários para fazer a análise da pergunta: 
+
+> Qual das séries que você escolheu é mais bem avaliada no IMDB? A diferença é grande? Pequena? Muda de acordo com as temporadas da série?
+
+Para uma série ser bem avaliada, não basta apenas uma boa média de avaliações. É preciso uma boa quantidade de avaliações por temporada.
+Para isso, criaremos um índice de nota representativa (INR) que atrela o season rating a quantidade de votos que a season teve. Desta forma poderemos ter uma medida de comparação.
+Este índice é importante pois podemos afirmar que quanto mais votos uma temporada tem, mais sua nota é válida. 
+
+```{r}
+d2 %>% group_by(series_name, season) %>% 
+  summarise(INR = total_votes/season_rating) %>%
+  ggplot(aes(x = season, y = INR/4000, color = series_name, group=series_name)) +
+  geom_line(stat='identity') +
+  geom_point() +
+  labs(x = "Temporadas", y = "Índice de Nota Representativa")  +
+  guides(color=guide_legend("Série"))
+```
+
+###Dexter
 
 Segundo a Wikipedia:
 
@@ -43,36 +71,8 @@ Contudo...
 
 > Season eight has 60% positive reviews, a score of 6.5 out of 10, and the final consensus: "In its final season, Dexter holds on to much of season seven's momentum and finishes on a strong note, even if the inevitable conclusion feels somewhat anticlimactic.""
 
-```{r warning=FALSE}
-boxplot(dexter$user_votes ~ dexter$season, col=topo.colors(8))
-```
-
-
-### How I Met Your Mother
+###How I Met Your Mother
 
 Segundo a Wikipedia:
 
 >How I Met Your Mother (often abbreviated to HIMYM) is an American sitcom that originally aired on CBS from September 19, 2005, to March 31, 2014. (...) The ninth and final season began airing on September 23, 2013, and concluded on March 31, 2014, with a double-length finale episode, which received polarized reviews from critics and fans alike for its controversial twist ending, as many critics and fans believed it contradicted many of the previous episodes.
-
-```{r warning=FALSE}
-boxplot(himym$user_votes ~ himym$season, col=topo.colors(9))
-```
-
-
-#As Perguntas
-
-> Qual das séries que você escolheu é mais bem avaliada no IMDB? A diferença é grande? Pequena? Muda de acordo com as temporadas da série?
-
-Para uma série ser bem avaliada, não basta apenas uma boa média de avaliações. É preciso uma boa quantidade de avaliações por episódio. Para isso definimos o índice rpe (ratings per episode) que indica a média de avaliações por episódio.
-
-```{r}
-```
-
-Podemos ver no gráfico abaixo as avaliações por temporadas. 
-
-```{r}
-```
-
-INSERIR AQUI CONCLUSÃO SOBRE O GRÁFICO ACIMA
-
-
