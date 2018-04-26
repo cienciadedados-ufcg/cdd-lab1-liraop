@@ -10,7 +10,7 @@ library(here)
 theme_set(theme_bw())
 ```
 
-Analisaremos os episódios das "séries" xxxx
+Analisaremos as séries Dexter e How I Met Your Mother, que são bastante diferentes proém que tem em comum mixed feelings quanto aos seus respectivos finais. 
 
 ```{r warning=FALSE}
 dados = read_csv(here("data/series_from_imdb.csv"), 
@@ -19,19 +19,28 @@ dados = read_csv(here("data/series_from_imdb.csv"),
                                      series_name = col_character(), 
                                      episode = col_character(), 
                                      url = col_character(),
-                                     season = col_character())) %>% filter(series_name %in% c("Yu Yu Hakusho", "Falling Skies"))
+                                     season = col_character())) %>% filter(series_name %in% c("Dexter", "How I Met Your Mother"))
 
-series <- dados %>% group_by(series_name) %>%
-  summarise(n = n()) 
+series <- dados %>% group_by(series_name) %>% 
+  summarise(episodes = n(), rating_avg = mean(user_rating), total_ratings = sum(user_votes), rpe = total_ratings/episodes)
 ```
 
-2) a. Qual das séries que você escolheu é mais bem avaliada no IMDB? A diferença é grande? Pequena? Muda de acordo com as temporadas da série? 
+2) 
+a. Qual das séries que você escolheu é mais bem avaliada no IMDB? A diferença é grande? Pequena? Muda de acordo com as temporadas da série?
+
+Para uma série ser bem avaliada, não basta apenas uma boa média de avaliações. É preciso uma boa quantidade de avaliações por episódio. Para isso definimos o índice rpe (ratings per episode) que indica a média de avaliações por episódio.
+
 
 ```{r}
-dados %>% 
-ggplot(aes(x = series_name, y = user_rating)) + 
-    geom_jitter(width = .05) +
-    ylim(5, 10) + 
-    labs(x = "Série", y = "Avaliação no IMDB")
+INSERIR AQUI GRÁFICO DEMONSTRANDO OS DADOS ACIMA
 ```
+
+Podemos ver no gráfico abaixo as avaliações por temporadas. 
+
+```{r}
+INSERIR AQUI GRAFICO COM A DISTRIBUIÇÃO DE AVALIAÇõES POR TEMPORADA
+```
+
+INSERIR AQUI CONCLUSÃO SOBRE O GRÁFICO ACIMA
+
 
