@@ -10,7 +10,13 @@ library(here)
 theme_set(theme_bw())
 ```
 
-Analisaremos as séries Dexter e How I Met Your Mother, que são bastante diferentes proém que tem em comum mixed feelings quanto aos seus respectivos finais. 
+Analizando as séries *Dexter* e *How I Met Your Mother*, que são bastante diferentes porém têm em comum mixed feelings quanto aos seus respectivos finais. 
+
+
+#Os dados
+
+Obtidos diretamente do IMDB, a tabela de dados obtidas possui, dentre outros dados, o nome da série, temporada, episódios das temporadas, nota de avaliações e quantidade de avaliações. Estes dados são importados no código abaixo.
+Fazendo uma tabela com alguns dados mais concisos e importantes para nossa análise, foi criada uma tabela *series* que contém informações reelevantes sobre as séries escolhidas.
 
 ```{r warning=FALSE}
 dados = read_csv(here("data/series_from_imdb.csv"), 
@@ -25,20 +31,18 @@ series <- dados %>% group_by(series_name) %>%
   summarise(episodes = n(), rating_avg = mean(user_rating), total_ratings = sum(user_votes), rpe = total_ratings/episodes)
 ```
 
-2) 
-a. Qual das séries que você escolheu é mais bem avaliada no IMDB? A diferença é grande? Pequena? Muda de acordo com as temporadas da série?
+#As Perguntas
+
+> Qual das séries que você escolheu é mais bem avaliada no IMDB? A diferença é grande? Pequena? Muda de acordo com as temporadas da série?
 
 Para uma série ser bem avaliada, não basta apenas uma boa média de avaliações. É preciso uma boa quantidade de avaliações por episódio. Para isso definimos o índice rpe (ratings per episode) que indica a média de avaliações por episódio.
 
-
 ```{r}
-INSERIR AQUI GRÁFICO DEMONSTRANDO OS DADOS ACIMA
 ```
 
 Podemos ver no gráfico abaixo as avaliações por temporadas. 
 
 ```{r}
-INSERIR AQUI GRAFICO COM A DISTRIBUIÇÃO DE AVALIAÇõES POR TEMPORADA
 ```
 
 INSERIR AQUI CONCLUSÃO SOBRE O GRÁFICO ACIMA
