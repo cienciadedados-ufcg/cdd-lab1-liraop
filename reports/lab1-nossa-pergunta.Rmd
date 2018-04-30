@@ -27,6 +27,9 @@ dados = read_csv(here("data/series_from_imdb.csv"),
                                      season = col_character())) %>% 
                                     filter(series_name %in% c("Dexter", "How I Met Your Mother")) 
 
+dexter <- dados %>% filter(series_name == "Dexter") 
+himym <- dados %>% filter(series_name == "How I Met Your Mother") 
+
 ```
 
 ##Visualizando os dados
@@ -70,6 +73,20 @@ Segundo a Wikipedia:
 Contudo...
 
 > Season eight has 60% positive reviews, a score of 6.5 out of 10, and the final consensus: "In its final season, Dexter holds on to much of season seven's momentum and finishes on a strong note, even if the inevitable conclusion feels somewhat anticlimactic.""
+
+```{r}
+dexter %>% 
+    ggplot(aes(x = season, y = user_votes)) +
+    geom_violin() + 
+    geom_jitter(width = .07) 
+```
+
+Desenhando o boxplot vemos que a maior parte das avaliações para cada temporada possui uma média de distribuições similares. Entretanto, alguns episódios em cada temporada mostram a existência de valores um tanto extremos. Esses valores são chamados de outliers. Vamos agora analizá-los.
+
+```{r}
+ten_outliers_dexter <- head(arrange(dexter, -user_votes), 10)
+```
+
 
 ###How I Met Your Mother
 
