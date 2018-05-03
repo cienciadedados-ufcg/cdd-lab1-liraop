@@ -87,6 +87,13 @@ Desenhando o boxplot vemos que a maior parte das avaliações para cada temporad
 ten_outliers_dexter <- head(arrange(dexter, -user_votes), 10)
 ```
 
+```{r}
+ten_outliers_dexter %>%
+    ggplot(aes(x=episode, y=user_votes, fill=season)) +
+    geom_col()
+```
+
+Observando o gráfico acima podemos istinguir quais são os outliers. São episódios de fechamento de temporada, sendo o mais extremo deles, o final da série. Neste caso, vemos que os outliers não são valores meramente aleatórios. Alguns podem corroborar com alguma conjectura que queremos propor.
 
 ###How I Met Your Mother
 
