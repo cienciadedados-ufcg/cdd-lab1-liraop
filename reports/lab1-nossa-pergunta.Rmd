@@ -64,6 +64,20 @@ d2 %>% group_by(series_name, season) %>%
   guides(color=guide_legend("Série"))
 ```
 
+Observando o gráfico podemos confirmar que as séries são bem avaliadas, no sentido de quantidade de votos. O INR tem um índice razoavelmente alto para ambas as séries. 
+Assim sendo, podemos comparar diretamente as notas do IMDB. 
+
+```{r}
+d2 %>% group_by(series_name, season) %>% 
+  ggplot(aes(x = season, y = season_rating, color = series_name, group=series_name)) +
+  geom_line(stat='identity') +
+  geom_point() +
+  labs(x = "Temporada", y = "Nota IMDB")  +
+  guides(color=guide_legend("Série"))
+```
+
+Como vemos no gráfico, How I Met Your Mother é pior avaliada temporada a temporada que Dexter. Salvando o caso da última temporada de Dexter, que é um `let down`, todas as outras foram bem avaliadas. A última temporada de HIMYM é também avaliada com uma nota mais baixa, evidenciando o mixed reviews que falamos previamente. 
+
 ###Dexter
 
 Segundo a Wikipedia:
@@ -93,7 +107,7 @@ ten_outliers_dexter %>%
     geom_col()
 ```
 
-Observando o gráfico acima podemos istinguir quais são os outliers. São episódios de fechamento de temporada, sendo o mais extremo deles, o final da série. Neste caso, vemos que os outliers não são valores meramente aleatórios. Alguns podem corroborar com alguma conjectura que queremos propor.
+Observando o gráfico acima podemos distinguir quais são os outliers. São episódios de fechamento de temporada, sendo o mais extremo deles, o final da série. Neste caso, vemos que os outliers não são valores meramente aleatórios. Alguns podem corroborar com alguma conjectura que queremos propor.
 
 ###How I Met Your Mother
 
