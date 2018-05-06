@@ -114,3 +114,23 @@ Observando o gráfico acima podemos distinguir quais são os outliers. São epis
 Segundo a Wikipedia:
 
 >How I Met Your Mother (often abbreviated to HIMYM) is an American sitcom that originally aired on CBS from September 19, 2005, to March 31, 2014. (...) The ninth and final season began airing on September 23, 2013, and concluded on March 31, 2014, with a double-length finale episode, which received polarized reviews from critics and fans alike for its controversial twist ending, as many critics and fans believed it contradicted many of the previous episodes.
+
+```{r}
+himym %>% 
+    ggplot(aes(x = season, y = user_votes)) +
+    geom_violin() + 
+    geom_jitter(width = .07) 
+```
+
+Desenhando o boxplot vemos que a maior parte das avaliações para cada temporada possui uma média de distribuições similares. Comparando com Dexter, vemos que não existem muitos outliers nas temporadas de HIMYM. Exceto a tão polêmica última temporada. 
+
+```{r}
+ten_outliers_himym <- head(arrange(himym, -user_votes), 10)
+```
+
+```{r}
+ten_outliers_himym %>%
+    ggplot(aes(x=episode, y=user_votes, fill=season)) +
+    geom_col()
+```
+Averiguando os outliers, comprovamos que os episódios mais avaliados foram, fatalmente, os da última temporada. Implicaria dizer que temos um final de série que as pessoas se envolveram bastante. 
