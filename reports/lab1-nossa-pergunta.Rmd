@@ -133,4 +133,14 @@ ten_outliers_himym %>%
     ggplot(aes(x=episode, y=user_votes, fill=season)) +
     geom_col()
 ```
-Averiguando os outliers, comprovamos que os episódios mais avaliados foram, fatalmente, os da última temporada. Implicaria dizer que temos um final de série que as pessoas se envolveram bastante. 
+Averiguando os outliers, comprovamos que os episódios mais avaliados foram, fatalmente, os da última temporada. Implicaria dizer que temos um final de série que as pessoas se envolveram bastante com o mesmo. 
+
+Em posse dessas duas análises respectivas para cada série, podemos agora fazer a perunta:
+
+> A avaliação dos episódios finais de cada temporada tem correlação com a avaliação da temporada como um todo? 
+
+```{r}
+season_finales_dexter <- dexter %>% filter(season_ep == 12)
+season_finales_dexter
+```
+
