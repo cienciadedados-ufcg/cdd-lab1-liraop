@@ -144,3 +144,7 @@ season_finales_dexter <- dexter %>% filter(season_ep == 12)
 season_finales_dexter
 ```
 
+```{r}
+season_finales_himym <- himym %>% group_by(season) %>% filter(season_ep == max(season_ep))
+season_finales_himym
+```
