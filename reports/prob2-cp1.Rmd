@@ -1,4 +1,4 @@
----
+    ---
 title: "Revisitando uma visualização"
 output: html_notebook
 ---
@@ -6,12 +6,13 @@ output: html_notebook
 ```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(htmlwidgets)
+library(plotly)
 library(here)
 theme_set(theme_bw())
 ```
 
 
-```{r warning=FALSE}
+```{r}
 dados = read_csv(here("data/series_from_imdb.csv"), 
                     progress = FALSE,
                     col_types = cols(.default = col_double(), 
@@ -25,9 +26,13 @@ dexter <- dados %>% filter(series_name == "Dexter")
 himym <- dados %>% filter(series_name == "How I Met Your Mother") 
 
 ```
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
-
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
-
+```{r}
+p <- plot_ly(dados, type="scatter", mode="markers+text",
+             y = ~dados$user_votes, 
+             x = ~dados$user_rating, 
+             size= ~dados$user_votes, 
+             color= ~dados$series_name,
+             hovertext= ~paste("Episódio:", dados$episode, '<br>S', dados$season, 'E', dados$season_ep)
+p
+```
