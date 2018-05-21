@@ -28,11 +28,28 @@ himym <- dados %>% filter(series_name == "How I Met Your Mother")
 ```
 
 ```{r}
-p <- plot_ly(dados, type="scatter", mode="markers+text",
-             y = ~dados$user_votes, 
-             x = ~dados$user_rating, 
-             size= ~dados$user_votes, 
-             color= ~dados$series_name,
-             hovertext= ~paste("Episódio:", dados$episode, '<br>S', dados$season, 'E', dados$season_ep)
+
+f <- list(
+  family = "Courier New, monospace",
+  size = 18,
+  color = "#7f7f7f"
+)
+y <- list(
+  title = "Total de votos",
+  titlefont = f
+)
+x <- list(
+  title = "Média IMDB",
+  titlefont = f
+)
+
+p <- plot_ly(dados, type="scatter", mode="markers+text+legends",
+             y = ~user_votes, 
+             x = ~user_rating, 
+             size= ~user_votes, 
+             color= ~series_name,
+             hovertext= ~paste("Episódio:", episode, '<br>S', season, 'E', season_ep)) %>%
+    layout(xaxis = x, yaxis = y)
 p
+    
 ```
