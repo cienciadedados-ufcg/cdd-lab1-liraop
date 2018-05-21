@@ -1,6 +1,8 @@
-    ---
+---
 title: "Revisitando uma visualização"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
@@ -12,7 +14,7 @@ theme_set(theme_bw())
 ```
 
 
-```{r}
+```{r echo=FALSE, warning=FALSE, message=FALSE}
 dados = read_csv(here("data/series_from_imdb.csv"), 
                     progress = FALSE,
                     col_types = cols(.default = col_double(), 
@@ -27,29 +29,34 @@ himym <- dados %>% filter(series_name == "How I Met Your Mother")
 
 ```
 
-```{r}
+```{r echo=FALSE, warning=FALSE, message=FALSE}
 
 f <- list(
   family = "Courier New, monospace",
   size = 18,
   color = "#7f7f7f"
 )
-y <- list(
+x <- list(
   title = "Total de votos",
   titlefont = f
 )
-x <- list(
+y <- list(
   title = "Média IMDB",
   titlefont = f
 )
 
 p <- plot_ly(dados, type="scatter", mode="markers+text+legends",
-             y = ~user_votes, 
-             x = ~user_rating, 
+             x = ~user_votes, 
+             y = ~user_rating, 
              size= ~user_votes, 
              color= ~series_name,
              hovertext= ~paste("Episódio:", episode, '<br>S', season, 'E', season_ep)) %>%
     layout(xaxis = x, yaxis = y)
 p
-    
 ```
+
+No gráfico acima podemos observar claramente a distribuição das notas de ambas as séries, episódio por episódio. 
+O tamanho do marcador indica a quantidade de votos.
+Colocando o mouse sobre os pontos de episódios, além dos pontos Y, Nota IMDB do episódio, e X, total de votos, se pode constar a temporada e o número do episódio da temporada.
+
+Na visualização temos uma visão geral e rápida sobre a avaliação dos episódios. Por exemplo, os episódios que mais se destacam quanto ao total de votos são os finais de temporada. Bem como podemos evidenciar que os episódios finais de ambas as séries são avaliados com notas bastante baixas. 
